@@ -1,2 +1,2 @@
-# 142HW1
+# Unix Shell Design
 Creating a UNIX shell
