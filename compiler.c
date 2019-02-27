@@ -6,6 +6,7 @@ int main() {
 	while(1) {
 		scanf("%s", str1);
 		printf("Inserted command: %s\n", str1);
+		//hello my love
 	}
 	return 0;
 }
