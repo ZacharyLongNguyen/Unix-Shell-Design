@@ -8,11 +8,11 @@ int main() {
 	while(1) {
 		printf("command> ");
 		scanf("%s", str1);
-		printf("Inserted command: %s\n", str1);
 		int exiting = strcmp(str1, str2);
 		if(exiting == 0) {
-			break;
+			return(0);
 		}
+		printf("Inserted command: %s\n", str1);
 		//hello my love
 		//stfu omar
 	}
