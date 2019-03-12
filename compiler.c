@@ -27,6 +27,7 @@ int main() {
 		printf("compiler> ");
 		//hello my love
 		//stfu omar
+		//suck dick darren, Love you too.
 	}
 	free(str1); // deallocates memory from str1
 	if(ferror(stdin)) { // checks if there is an error, returns 0 if no error
