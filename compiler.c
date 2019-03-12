@@ -15,6 +15,7 @@ int main() {
 		printf("Inserted command: %s\n", str1);
 		//hello my love
 		//stfu omar
+		//suck dick darren, Love you too.
 	}
 	return(0);
 }
