@@ -5,7 +5,6 @@
 #include <err.h>
 
 int main() {
-	//Test line commit
 	printf("compiler> ");
 	char *str1 = NULL;
 	size_t linesize = 0; // number of elements with elements being of a certain byte size
