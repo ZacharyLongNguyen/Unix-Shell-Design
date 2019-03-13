@@ -24,6 +24,11 @@ int main() {
 			//Need to implement this
 			printf("cd");
 		}
+		else if (strncmp("path", str1, 4) == 0) {
+			//if input is path
+			//Need to implement this
+			printf("path");
+		}
 		pathlen = linelen - 1;
 		strncat(path1, str1,pathlen);
 		strncat(path2, str1,pathlen);
