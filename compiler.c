@@ -12,6 +12,9 @@ int main() {
 		-Implement cd and path command
 		-Implement parser
 		-Implement already existing programs
+		-Add error stuff
+		-Implement redirection
+		-Implement parallel commands
 		-Hint from friends: The parser needs to be a function, and it should return a pointer that points to
 		 a pointer
 		-From Larkin: the 'cd' command should call the chdir() function, where the input is what comes after
