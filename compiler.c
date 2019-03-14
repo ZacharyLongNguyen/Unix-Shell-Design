@@ -4,15 +4,23 @@
 #include <unistd.h>
 #include <err.h>
 
+char ** parser(char *);
+
 int main() {
 	/*
 		TODO:
 		-Implement cd and path command
 		-Implement parser
 		-Implement already existing programs
+		-Hint from friends: The parser needs to be a function, and it should return a pointer that points to
+		 a pointer
+		-From Larkin: the 'cd' command should call the chdir() function, where the input is what comes after
+		 the cd command
+			-This means we need to work on the parser
 	*/
-	printf("compiler> ");
+	printf("SJShell> ");
 	char *str1 = NULL;
+	char *dir = "";
 	char *path1 = (char*)malloc(sizeof(char)*15);
 	char *path2 = (char*)malloc(sizeof(char)*20);
 	char *parser = NULL;
@@ -28,12 +36,18 @@ int main() {
 		else if (strncmp("cd", str1, 2) == 0) {
 			//if cd is input
 			//Need to implement this
-			printf("cd");
+			dir = strtok(str1, " \n");
+			//while(parsed != NULL) {
+				//printf ("%s\n", parsed);
+			dir = strtok (NULL, " ");
+			//printf ("%s\n", dir);
+			//}
+			//printf("cd\n");
 		}
 		else if (strncmp("path", str1, 4) == 0) {
 			//if input is path
 			//Need to implement this
-			printf("path");
+			printf("path\n");
 		}
 		pathlen = linelen - 1;
 		strncat(path1, str1,pathlen);
@@ -48,8 +62,10 @@ int main() {
 			//The 0 in the following line are arguments from the parser
 			execv(path2, 0);
 		}
+		//This is only for testing, and should be removed once the assignment is working
 		printf("Input command: ");
 		fwrite(str1, linelen, 1, stdout); // rewrites the input line
+		//I don't think we need to define fork
 		/*if (strncmp("fork", str1, 4) {
 			int rc = fork();
 			if (rc < 0) { // fork fails
@@ -58,10 +74,19 @@ int main() {
 			}
 			else if (rc == 0) {
 				*/
-		printf("compiler> ");
+		printf("SJShell> %s", dir);
 	}
 	free(str1); // deallocates memory from str1
 	if(ferror(stdin)) { // checks if there is an error, returns 0 if no error
 		err(1, "getline"); // displays an error message with where the error is
 	}
 }
+
+//Parser function
+/*
+char ** parser (char *str1) {
+	char *parsed;
+	parsed = strtok (str1, " ");
+}
+*/
+
