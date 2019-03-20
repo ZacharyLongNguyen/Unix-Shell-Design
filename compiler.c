@@ -4,22 +4,18 @@
 #include <unistd.h>
 #include <err.h>
 
-char ** parser(char *);
+extern FILE *stderr;
 
 int main() {
 	/*
 		TODO:
 		-Implement cd and path command
-		-Implement parser
 		-Implement already existing programs
 		-Add error stuff
 		-Implement redirection
 		-Implement parallel commands
-		-Hint from friends: The parser needs to be a function, and it should return a pointer that points to
-		 a pointer
 		-From Larkin: the 'cd' command should call the chdir() function, where the input is what comes after
 		 the cd command
-			-This means we need to work on the parser
 	*/
 	printf("SJShell> ");
 	char *str1 = NULL;
@@ -74,21 +70,11 @@ int main() {
 		//This is only for testing, and should be removed once the assignment is working
 		printf("Input command: ");
 		fwrite(str1, linelen, 1, stdout); // rewrites the input line
-		//I don't think we need to define fork
-		/*if (strncmp("fork", str1, 4) {
-			int rc = fork();
-			if (rc < 0) { // fork fails
-				printf("Fork failed\n");
-				exit(1);
-			}
-			else if (rc == 0) {
-				*/
 		printf("SJShell> ");
 	}
 	free(str1); // deallocates memory from str1
 	free(dir); // deallocates memory from dir
-	if(ferror(stdin)) { // checks if there is an error, returns 0 if no error
-		err(1, "getline"); // displays an error message with where the error is
-	}
+	char error_message[30] = "An error has occurred\n";
+	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
