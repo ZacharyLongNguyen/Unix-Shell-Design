@@ -85,7 +85,17 @@ int main() {
 	free(dir); // deallocates memory from dir
 	char error_message[30] = "An error has occurred\n";
 	write(STDERR_FILENO, error_message, strlen(error_message));
+    
+    pid_t child=fork();
+    if (child==0){ //if there is no child
+        printf("***child***\n current PID: %d and Child PID: %d\n",getpid(), child);
+    }
+    else{ // create a proccess similar to the one running
+        printf("### Parent ###\nCurrent PID: %d and Child PID: %d\n",getpid(), child);
+    }
+    
 }
+
 
 /*
 char ** parser (char *input) {
