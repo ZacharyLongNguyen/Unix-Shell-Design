@@ -19,17 +19,19 @@ int main() {
 	currentDir = getcwd(buff, sizeof(buff));
 	printf("MemeShell> ");
 	char *str1 = NULL;
-	char **args;
-	char **dir = malloc(8*sizeof(char*));
-	char *path1 = (char*)malloc(sizeof(char)*15);
-	char *path2 = (char*)malloc(sizeof(char)*20);
-	strcpy(path1, "/bin/");
-	strcpy(path2, "/usr/bin/");
+	char **args = malloc(10*sizeof(char*));
+	char **paths = malloc(10*sizeof(char *));
+	char **dir;
+	dir[0] = "";
+	pid_t pid;
+	//strcpy(paths[0], "/bin");
+	int pathcount = 0;
 	char *defaultPath = malloc(sizeof(char*));
 	strcpy(defaultPath, "/bin/");
+	paths[0] = defaultPath;
 	dir[0] = defaultPath;//Sets default path
 	size_t linesize = 0; // number of elements with elements being of a certain byte size
-	ssize_t linelen, pathlen; // byte size of each element, or negative error value
+	ssize_t linelen;
 	while((linelen = getline(&str1, &linesize, stdin)) != -1) { // user input and input length
 		//If the input is exit, exit, regardless of what is passed
 		if(strncmp("exit", str1, 4) == 0) {
@@ -40,47 +42,51 @@ int main() {
 			if(args[2] != NULL) //Check if there is more than one input for cd
 				printf("Too many arguments passed for cd \n");
 			else if(args[1] == NULL) { //Check if the user only input 'cd'
-				int cdcheck = chdir(currentDir); //Checks to make sure the default address is correct
+				//If so, change back to default directory
+				int cdcheck = chdir(currentDir);
 				if(cdcheck < 0) 
 					printf("Bad address for cd\n");
 			
 			}
 			else {
 				chdir(args[1]);
-				dir = args[1];
+				dir[0] = args[1];
 			}
 		}
 		else if (strncmp("path", str1, 4) == 0) {
 			//if input is path
 			//Need to implement this
-			printf("path\n");
+			args = parser(str1);
+			//Checks if only path is input
+			if(args[1] == NULL) {
+				paths[0] = NULL;
+			}		
+			else {
+				int count = 1;
+				while(args[count] != NULL) { 
+					strcpy(paths[count - 1], args[count]);
+					count++;
+				}
+			}
 		}
 		else { //The input is already an existing function, or doesn't exist
-			//pathlen = linelen - 1;
-			//char **args = parser(str1); //Places arguments after command into args char
-			args = parser(str1);
-			strncat(path1, str1,pathlen); //
-			strncat(path2, str1,pathlen);
-			if(access(path1, X_OK) == 0) {
-				//printf("Command exists in path1");
-				//The 0 in the following line needs to get arguments from the parser!
-				/*int runcheck = fork();
-				if(runcheck < 0) {
-					printf("Function call failed. Exiting child.");
-					exit(0);
-				}*/
-				/*else if(runcheck == 0) {
-					execv(path1,
-				}*/
-				execv(path1, 0);
-			}
-			else if(access(path2, X_OK) == 0) {
-				//printf("Command exists in path2");
-				//The 0 in the following line are arguments from the parser
-				execv(path2, 0);
+			//We need to fork, and let the child run the process
+			if(paths[0] == NULL)
+				printf("Invalid path, no external commands can be run\n");
+			else {
+				args = parser(str1);
+				pid = fork();
+				for(int i = 0; i < pathcount - 1; i++) {
+					//strcat(paths[i], args[0]);
+					printf("Checking if path exists\n");
+					if(access(paths[i], X_OK) == 0) {
+						printf("Command exists in path %d\n", i);
+						break;
+					}
+				}
 			}
 		}
-		printf("MemeShell%s> ", dir);
+		printf("MemeShell%s> ", dir[0]);
 	}
 	free(str1); // deallocates memory from str1
 	free(dir); // deallocates memory from dir
@@ -91,14 +97,16 @@ int main() {
 char ** parser (char *input) {
 	input = strtok(input, "\n");
 	char *parsed;
+	//Creates args, which is an array that stores the command at args[0], and all input arguments in the following indexes
 	char **args = malloc(8*sizeof(char *));
 	int argSize = 0;
 	parsed = strtok(input, " ");
-	while(parsed != NULL) {
+	while(parsed != NULL) { //Loop places the command and each input into args
 		args[argSize] = parsed;
 		argSize++;
 		parsed = strtok(NULL, " ");
 	}
+	//Make the last index NULL so it can not go past that index
 	args[argSize] = NULL;
 	return args;
 }
