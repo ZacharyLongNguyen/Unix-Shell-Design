@@ -10,13 +10,10 @@ char *currentDir;
 int main() {
 	/*
 		TODO:
-		-Implement cd and path command
+		-Implement path command
 		-Implement already existing programs
-		-Add error stuff
 		-Implement redirection
 		-Implement parallel commands
-		-From Larkin: the 'cd' command should call the chdir() function, where the input is what comes after
-		 the cd command
 	*/
 	char buff[1000];
 	currentDir = getcwd(buff, sizeof(buff));
@@ -30,19 +27,20 @@ int main() {
 	strcpy(path2, "/usr/bin/");
 	char *defaultPath = malloc(sizeof(char*));
 	strcpy(defaultPath, "/bin/");
-	dir[0] = defaultPath;
+	dir[0] = defaultPath;//Sets default path
 	size_t linesize = 0; // number of elements with elements being of a certain byte size
 	ssize_t linelen, pathlen; // byte size of each element, or negative error value
 	while((linelen = getline(&str1, &linesize, stdin)) != -1) { // user input and input length
+		//If the input is exit, exit, regardless of what is passed
 		if(strncmp("exit", str1, 4) == 0) {
 			exit(0);
 		}
 		else if (strncmp("cd", str1, 2) == 0) { //checks if cd is input
 			args = parser(str1);
-			if(args[2] != NULL) 
+			if(args[2] != NULL) //Check if there is more than one input for cd
 				printf("Too many arguments passed for cd \n");
-			else if(args[1] == NULL) {
-				int cdcheck = chdir(currentDir);
+			else if(args[1] == NULL) { //Check if the user only input 'cd'
+				int cdcheck = chdir(currentDir); //Checks to make sure the default address is correct
 				if(cdcheck < 0) 
 					printf("Bad address for cd\n");
 			
@@ -82,10 +80,6 @@ int main() {
 				execv(path2, 0);
 			}
 		}
-		//This is only for testing, and should be removed once the assignment is working
-		//printf("Input command: ");
-		//fwrite(str1, linelen, 1, stdout); // rewrites the input line
-		//printf("\n");
 		printf("MemeShell%s> ", dir);
 	}
 	free(str1); // deallocates memory from str1
