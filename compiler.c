@@ -34,16 +34,6 @@ int main() {
 	size_t linesize = 0; // number of elements with elements being of a certain byte size
 	ssize_t linelen, pathlen; // byte size of each element, or negative error value
 	while((linelen = getline(&str1, &linesize, stdin)) != -1) { // user input and input length
-		//str1 = strtok(str1, " \n"); // string for command
-		//dir = strtok(NULL, " \n"); // string for directory
-		//printf("%s \n", str1); // just for testing
-		//printf("%s \n", dir); // just for testing
-		/*if (dir == NULL) {
-			dir = "(null)";
-			if (strncmp("exit", str1, 4) == 0) { // check if input = "exit", return 0 if true
-				exit(0);
-			}
-		}*/
 		if(strncmp("exit", str1, 4) == 0) {
 			exit(0);
 		}
@@ -57,11 +47,10 @@ int main() {
 					printf("Bad address for cd\n");
 			
 			}
-			else
+			else {
 				chdir(args[1]);
-			//dir = strtok(str1, " \n");
-			//dir = strtok (NULL, " ");
-			//dir[strlen(dir) - 1] = '\0'; //Remove the end line character at the end of dir
+				dir = args[1];
+			}
 		}
 		else if (strncmp("path", str1, 4) == 0) {
 			//if input is path
@@ -99,10 +88,10 @@ int main() {
 		//printf("\n");
 		printf("MemeShell%s> ", dir);
 	}
-	//free(str1); // deallocates memory from str1
-	//free(dir); // deallocates memory from dir
-	//char error_message[30] = "An error has occurred\n";
-	//write(STDERR_FILENO, error_message, strlen(error_message));
+	free(str1); // deallocates memory from str1
+	free(dir); // deallocates memory from dir
+	char error_message[30] = "An error has occurred\n";
+	write(STDERR_FILENO, error_message, strlen(error_message));
 }
 
 char ** parser (char *input) {
