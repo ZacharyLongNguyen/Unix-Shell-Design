@@ -108,4 +108,3 @@ char ** parser (char *input) {
 	args[argSize] = NULL;
 	return args;
 }
-//that's all folks
